@@ -641,14 +641,14 @@ describe('03-arrays-tasks', () => {
       }, {
         n: 2,
         expected: [[1, 0],
-          [0, 1]],
+        [0, 1]],
       }, {
         n: 5,
         expected: [[1, 0, 0, 0, 0],
-          [0, 1, 0, 0, 0],
-          [0, 0, 1, 0, 0],
-          [0, 0, 0, 1, 0],
-          [0, 0, 0, 0, 1]],
+        [0, 1, 0, 0, 0],
+        [0, 0, 1, 0, 0],
+        [0, 0, 0, 1, 0],
+        [0, 0, 0, 0, 1]],
       },
     ].forEach((data) => {
       const actual = tasks.getIdentityMatrix(data.n);
@@ -689,8 +689,8 @@ describe('03-arrays-tasks', () => {
       {
         start: -5,
         end: -3,
-        expected: [-5, -4 ,-3],
-      }
+        expected: [-5, -4, -3],
+      },
     ].forEach((data) => {
       const actual = tasks.getIntervalArray(data.start, data.end);
       assert.deepEqual(

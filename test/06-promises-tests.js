@@ -104,7 +104,7 @@ describe('07-promises-tasks', () => {
     }).catch((error) => {
       const errorMessage = error instanceof Error ? error : defaultRejectionMessage;
       messages.push(errorMessage.message);
-    // result 2
+      // result 2
     }).then(() => result2).catch((error) => {
       const errorMessage = error instanceof Error ? error : defaultRejectionMessage;
 
