@@ -103,8 +103,8 @@ function angleBetweenClockHands(date) {
   let h = new Date(date).getUTCHours();
   const m = new Date(date).getUTCMinutes();
   if (h >= 12) h -= 12;
-  const α = Math.abs(30 * h + 0.5 * m - 6 * m);
-  const rad = (α * 2 * Math.PI) / 360;
+  const alpha = Math.abs(30 * h + 0.5 * m - 6 * m);
+  const rad = (alpha * 2 * Math.PI) / 360;
   const PiMinRad = Math.abs(2 * Math.PI - rad);
   return Math.min(rad, PiMinRad);
 }
