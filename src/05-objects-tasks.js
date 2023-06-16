@@ -115,63 +115,80 @@ function fromJSON(proto, json) {
  */
 
 const cssSelectorBuilder = {
-  acc: [],
+  acc: '',
+  order: 0,
+  repeatabilityError: 'Element, id and pseudo-element should not occur more then one time inside the selector',
+  orderError: 'Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element',
+
+  checkOrder(order) {
+    if (this.order > order) {
+      throw new Error(this.orderError);
+    }
+    if (order === this.order && [1, 2, 6].includes(order)) {
+      throw new Error(this.repeatabilityError);
+    }
+  },
+
   element(value) {
-    this.elSelector = `${value}`;
-    this.acc.push(this.elSelector);
-    return this;
+    this.checkOrder(1);
+    const object = { ...cssSelectorBuilder };
+    object.acc = this.acc + value;
+    object.order = 1;
+    return object;
   },
 
   id(value) {
-    this.idSelector = `#${value}`;
-    this.acc.push(this.idSelector);
-    return this;
+    this.checkOrder(2);
+    const object = { ...cssSelectorBuilder };
+    object.acc = `${this.acc}#${value}`;
+    object.order = 2;
+    return object;
   },
 
   class(value) {
-    this.classSelector = `.${value}`;
-    this.acc.push(this.classSelector);
-    return this;
+    this.checkOrder(3);
+    const object = { ...cssSelectorBuilder };
+    object.acc = `${this.acc}.${value}`;
+    object.order = 3;
+    return object;
   },
 
   attr(value) {
-    this.attrSelector = `[${value}]`;
-    this.acc.push(this.attrSelector);
-    return this;
+    this.checkOrder(4);
+    const object = { ...cssSelectorBuilder };
+    object.acc = `${this.acc}[${value}]`;
+    object.order = 4;
+    return object;
   },
 
   pseudoClass(value) {
-    this.pseudoClassSelector = `:${value}`;
-    this.acc.push(this.pseudoClassSelector);
-    return this;
+    this.checkOrder(5);
+    const object = { ...cssSelectorBuilder };
+    object.acc = `${this.acc}:${value}`;
+    object.order = 5;
+    return object;
   },
 
   pseudoElement(value) {
-    this.pseudoElementSelector = `::${value}`;
-    this.acc.push(this.pseudoElementSelector);
-    return this;
+    this.checkOrder(6);
+    const object = { ...cssSelectorBuilder };
+    object.acc = `${this.acc}::${value}`;
+    object.order = 6;
+    return object;
   },
 
   combine(selector1, combinator, selector2) {
-    this.acc = [...selector1.acc, ` ${combinator} `, ...selector2.acc];
-    return this;
+    const object = { ...cssSelectorBuilder };
+    object.acc = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+    return object;
   },
+
   stringify() {
-    this.acc.filter((item) => typeof item === 'string');
-    const result = this.acc.join('');
-    this.acc = [];
-    return result;
+    const { acc } = this;
+    this.acc = '';
+    return acc;
   },
 };
-
-const builder = cssSelectorBuilder;
-// console.log(builder);
-console.log(
-  builder.combine(
-    builder.element('p').pseudoClass('focus'),
-    '>',
-    builder.element('a').attr('href$=".png"'),
-  ).stringify());
 
 
 module.exports = {
